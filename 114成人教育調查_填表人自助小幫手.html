@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>114年成人教育調查｜填表小幫手</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;600;700;900&family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f2ede2;
+    --bg-2:#e8e0cd;
+    --card:#fffdf7;
+    --ink:#233d36;
+    --ink-soft:#3d5850;
+    --coral:#d8703e;
+    --coral-soft:#f0e0d2;
+    --sage:#5c7a63;
+    --sage-soft:#e3ead9;
+    --line:#ded4bd;
+    --text:#2a2a24;
+    --muted:#77705d;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:"Noto Sans TC",sans-serif;
+    min-height:100vh;
+  }
+
+  /* ===== Header ===== */
+  header{
+    background:var(--ink);
+    color:#f6f1e4;
+    padding:34px 24px 60px;
+    position:relative;
+    overflow:hidden;
+  }
+  header::after{
+    content:"";
+    position:absolute;
+    right:-60px; top:-60px;
+    width:220px; height:220px;
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(216,112,62,0.35), transparent 70%);
+  }
+  .header-inner{
+    max-width:840px;
+    margin:0 auto;
+    position:relative;
+    z-index:1;
+    text-align:center;
+  }
+  .eyebrow{
+    font-size:12.5px;
+    letter-spacing:0.3em;
+    color:#e0a37e;
+    font-weight:600;
+    margin-bottom:10px;
+  }
+  h1{
+    font-family:"Noto Serif TC",serif;
+    font-weight:700;
+    font-size:27px;
+    margin:0 0 10px;
+    line-height:1.5;
+  }
+  .sub{
+    font-size:14.5px;
+    color:#cdd8cf;
+    max-width:560px;
+    margin:0 auto;
+    line-height:1.8;
+  }
+
+  /* ===== Stepper (signature element) ===== */
+  .stepper{
+    max-width:840px;
+    margin:-34px auto 0;
+    position:relative;
+    z-index:2;
+    background:var(--card);
+    border-radius:16px;
+    box-shadow:0 10px 30px rgba(35,61,54,0.18);
+    padding:18px 20px;
+    display:flex;
+    gap:8px;
+    overflow-x:auto;
+  }
+  .step{
+    flex:1;
+    min-width:110px;
+    text-align:center;
+    padding:10px 8px;
+    border-radius:10px;
+    cursor:pointer;
+    transition:background .15s;
+    font-size:12.5px;
+    color:var(--muted);
+  }
+  .step:hover{background:var(--sage-soft);}
+  .step.active{background:var(--sage);color:#fff;}
+  .step .num{
+    font-family:"Noto Serif TC",serif;
+    font-weight:700;
+    font-size:15px;
+    display:block;
+    margin-bottom:2px;
+  }
+  .step.active .num{color:#fff;}
+
+  /* ===== Layout ===== */
+  .layout{
+    max-width:840px;
+    margin:0 auto;
+    padding:32px 20px 60px;
+  }
+
+  .search-wrap{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:20px 22px;
+    margin-bottom:26px;
+    box-shadow:0 4px 14px rgba(35,61,54,0.06);
+  }
+  .search-label{
+    font-family:"Noto Serif TC",serif;
+    font-size:14px;
+    color:var(--ink-soft);
+    margin-bottom:10px;
+  }
+  .search-row{display:flex; gap:10px;}
+  #searchInput{
+    flex:1;
+    font-size:16px;
+    padding:13px 16px;
+    border:1.5px solid var(--line);
+    border-radius:10px;
+    background:#fff;
+    outline:none;
+  }
+  #searchInput:focus{border-color:var(--coral); box-shadow:0 0 0 3px rgba(216,112,62,0.14);}
+  #searchBtn{
+    font-family:"Noto Serif TC",serif;
+    font-weight:600;
+    font-size:15px;
+    padding:0 24px;
+    background:var(--coral);
+    color:#fff;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    transition:background .15s;
+  }
+  #searchBtn:hover{background:#c15f30;}
+  .quick-row{margin-top:14px; display:flex; flex-wrap:wrap; gap:8px;}
+  .quick-chip{
+    font-size:12.5px;
+    padding:6px 13px;
+    border:1px solid var(--line);
+    border-radius:16px;
+    background:var(--bg);
+    color:var(--ink-soft);
+    cursor:pointer;
+    transition:all .15s;
+  }
+  .quick-chip:hover{border-color:var(--coral); color:var(--coral); background:#fff;}
+
+  /* ===== Mode toggle ===== */
+  .mode-toggle{
+    display:flex;
+    gap:8px;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:6px;
+    margin-bottom:22px;
+    box-shadow:0 3px 10px rgba(35,61,54,0.05);
+  }
+  .mode-btn{
+    flex:1;
+    text-align:center;
+    padding:11px 8px;
+    border-radius:10px;
+    font-family:"Noto Serif TC",serif;
+    font-weight:600;
+    font-size:14.5px;
+    color:var(--muted);
+    cursor:pointer;
+    transition:all .15s;
+  }
+  .mode-btn:hover{background:var(--sage-soft);}
+  .mode-btn.active{background:var(--sage); color:#fff;}
+
+  /* ===== Chat interface ===== */
+  .chat-shell{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:16px;
+    box-shadow:0 4px 14px rgba(35,61,54,0.06);
+    overflow:hidden;
+    margin-bottom:26px;
+  }
+  .chat-head{
+    background:var(--ink);
+    color:#f6f1e4;
+    padding:14px 20px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:13.5px;
+  }
+  .chat-head .dot{
+    width:9px; height:9px;
+    border-radius:50%;
+    background:#7fbf8e;
+    box-shadow:0 0 0 3px rgba(127,191,142,0.25);
+  }
+  .chat-head .name{font-family:"Noto Serif TC",serif; font-weight:700; font-size:14.5px;}
+  .chat-body{
+    max-height:440px;
+    min-height:220px;
+    overflow-y:auto;
+    padding:20px;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+  }
+  .msg-row{display:flex; gap:10px; max-width:100%;}
+  .msg-row.user{flex-direction:row-reverse;}
+  .avatar{
+    flex:none;
+    width:32px; height:32px;
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-size:15px;
+  }
+  .avatar.bot{background:var(--sage-soft); }
+  .avatar.user{background:var(--coral-soft);}
+  .bubble{
+    max-width:76%;
+    padding:12px 16px;
+    border-radius:16px;
+    font-size:14.5px;
+    line-height:1.85;
+  }
+  .msg-row.bot .bubble{
+    background:var(--sage-soft);
+    color:var(--ink);
+    border-bottom-left-radius:4px;
+  }
+  .msg-row.user .bubble{
+    background:var(--coral);
+    color:#fff;
+    border-bottom-right-radius:4px;
+  }
+  .bubble .bubble-tag{
+    display:inline-block;
+    font-size:11px;
+    font-weight:700;
+    color:var(--sage);
+    background:#fff;
+    padding:2px 9px;
+    border-radius:10px;
+    margin-bottom:7px;
+  }
+  .bubble .bubble-tip{
+    margin-top:9px;
+    padding-top:9px;
+    border-top:1px dashed rgba(35,61,54,0.2);
+    font-size:13px;
+    color:#5a4423;
+  }
+  .bubble .bubble-tip .label{font-weight:700;}
+  .bubble .contact-line{
+    display:inline-block;
+    margin-top:9px;
+    font-size:12.5px;
+    background:#fff;
+    color:var(--ink);
+    padding:6px 14px;
+    border-radius:14px;
+  }
+  .typing .bubble{display:flex; gap:5px; align-items:center; padding:14px 18px;}
+  .typing .dot-anim{
+    width:6px; height:6px; border-radius:50%;
+    background:var(--ink-soft);
+    opacity:0.4;
+    animation:blink 1.2s infinite;
+  }
+  .typing .dot-anim:nth-child(2){animation-delay:0.2s;}
+  .typing .dot-anim:nth-child(3){animation-delay:0.4s;}
+  @keyframes blink{ 0%,80%,100%{opacity:0.25;} 40%{opacity:0.9;} }
+
+  .chat-suggest{
+    padding:0 20px 16px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  .chat-input-row{
+    display:flex;
+    gap:10px;
+    padding:14px 16px;
+    border-top:1px solid var(--line);
+    background:#fbf8f0;
+  }
+  #chatInput{
+    flex:1;
+    font-size:15px;
+    padding:12px 16px;
+    border:1.5px solid var(--line);
+    border-radius:22px;
+    outline:none;
+    background:#fff;
+  }
+  #chatInput:focus{border-color:var(--coral); box-shadow:0 0 0 3px rgba(216,112,62,0.14);}
+  #chatSendBtn{
+    font-family:"Noto Serif TC",serif;
+    font-weight:600;
+    font-size:14.5px;
+    padding:0 22px;
+    background:var(--coral);
+    color:#fff;
+    border:none;
+    border-radius:22px;
+    cursor:pointer;
+    transition:background .15s;
+  }
+  #chatSendBtn:hover{background:#c15f30;}
+
+  .results-meta{font-size:13px; color:var(--muted); margin:0 4px 14px;}
+  .results-meta b{color:var(--ink);}
+
+  .section-heading{
+    font-family:"Noto Serif TC",serif;
+    font-size:16px;
+    font-weight:700;
+    color:var(--ink);
+    margin:28px 4px 12px;
+    padding-bottom:8px;
+    border-bottom:2px solid var(--sage);
+  }
+  .section-heading:first-child{margin-top:0;}
+  .section-desc{
+    font-size:13px;
+    color:var(--muted);
+    margin:-6px 4px 14px;
+    line-height:1.7;
+  }
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:14px;
+    margin-bottom:14px;
+    padding:18px 22px 20px;
+    box-shadow:0 3px 10px rgba(35,61,54,0.05);
+  }
+  .tag-num{
+    display:inline-block;
+    font-family:"Noto Serif TC",serif;
+    font-size:11.5px;
+    font-weight:700;
+    color:#fff;
+    background:var(--sage);
+    padding:3px 11px;
+    border-radius:12px;
+    margin-bottom:10px;
+  }
+  .q-line{
+    font-family:"Noto Serif TC",serif;
+    font-size:16px;
+    font-weight:600;
+    color:var(--ink);
+    margin:0 0 8px;
+    line-height:1.6;
+  }
+  .a-line{
+    font-size:14.5px;
+    line-height:1.9;
+    color:var(--text);
+    margin:0;
+  }
+  .a-line::before{content:"👉  "; }
+
+  .tip-box{
+    margin-top:12px;
+    background:var(--coral-soft);
+    border-radius:10px;
+    padding:11px 15px;
+    font-size:13px;
+    line-height:1.7;
+    color:#7a3d1c;
+  }
+  .tip-box .label{font-weight:700; margin-right:2px;}
+
+  .no-result{
+    background:var(--card);
+    border:1px dashed var(--line);
+    border-radius:14px;
+    padding:36px 24px;
+    text-align:center;
+    color:var(--muted);
+  }
+  .no-result .big{
+    font-family:"Noto Serif TC",serif;
+    font-size:18px;
+    color:var(--ink);
+    margin-bottom:10px;
+    font-weight:600;
+  }
+  .no-result .contact{
+    display:inline-block;
+    margin-top:14px;
+    background:var(--sage);
+    color:#fff;
+    padding:9px 20px;
+    border-radius:20px;
+    font-size:13px;
+  }
+
+  footer{
+    text-align:center;
+    font-size:12.5px;
+    color:var(--muted);
+    padding:10px 20px 44px;
+    line-height:1.8;
+  }
+
+  /* ===== Contact card ===== */
+  .contact-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:20px 24px;
+    margin-top:8px;
+    box-shadow:0 4px 14px rgba(35,61,54,0.06);
+    display:flex;
+    align-items:center;
+    gap:16px;
+    flex-wrap:wrap;
+  }
+  .contact-card .icon{
+    flex:none;
+    width:46px; height:46px;
+    border-radius:50%;
+    background:var(--sage-soft);
+    display:flex; align-items:center; justify-content:center;
+    font-size:22px;
+  }
+  .contact-card .info{flex:1; min-width:220px;}
+  .contact-card .info .title{
+    font-family:"Noto Serif TC",serif;
+    font-weight:700;
+    font-size:15px;
+    color:var(--ink);
+    margin-bottom:4px;
+  }
+  .contact-card .info .detail{
+    font-size:13.5px;
+    color:var(--ink-soft);
+    line-height:1.8;
+  }
+  .contact-card .info .detail b{color:var(--coral);}
+  .contact-card a.phone-link{
+    color:var(--coral);
+    font-weight:700;
+    text-decoration:none;
+  }
+  .contact-card a.phone-link:hover{text-decoration:underline;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="eyebrow">SELF-SERVICE GUIDE · 填表人自助查詢</div>
+    <h1>114年成人教育調查機構問卷<br>填表小幫手</h1>
+    <div class="sub">不確定某一題怎麼填嗎？在下面輸入題號或關鍵字，馬上找到填寫說明。找不到答案也沒關係，我們都留了聯絡方式。</div>
+  </div>
+</header>
+
+<div class="stepper" id="stepper" style="display:none;"></div>
+
+<div class="layout">
+
+  <div class="mode-toggle">
+    <div class="mode-btn active" id="btnModeChat">💬　直接問問題</div>
+    <div class="mode-btn" id="btnModeBrowse">📖　依題號瀏覽</div>
+  </div>
+
+  <div id="chatMode">
+    <div class="chat-shell">
+      <div class="chat-head">
+        <span class="dot"></span>
+        <span class="name">填表小幫手</span>
+        <span>・在下面打字，我立刻幫您查</span>
+      </div>
+      <div class="chat-body" id="chatBody"></div>
+      <div class="chat-suggest" id="chatSuggest"></div>
+      <div class="chat-input-row">
+        <input type="text" id="chatInput" placeholder="請輸入您的問題，例如：志工那題沒有志工怎麼選？">
+        <button id="chatSendBtn">送出</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="browseMode" style="display:none;">
+    <div class="search-wrap">
+      <div class="search-label">請輸入您想查的題號或關鍵字（例如：人數人次、志工、200萬、樂齡大學）</div>
+      <div class="search-row">
+        <input type="text" id="searchInput" placeholder="例如：第9題人數人次怎麼算？">
+        <button id="searchBtn">查　詢</button>
+      </div>
+      <div class="quick-row" id="quickChips"></div>
+    </div>
+
+    <div class="results-meta" id="resultsMeta"></div>
+    <div id="results"></div>
+  </div>
+
+  <div class="contact-card">
+    <div class="icon">📞</div>
+    <div class="info">
+      <div class="title">還有其他疑問嗎？歡迎直接來電詢問</div>
+      <div class="detail">
+        研究團隊聯絡電話：<a class="phone-link" href="tel:0229052901">(02) 2905-2901</a>　聯絡窗口：胡小姐<br>
+        可來電時段：<b>09:00–11:30、13:30–16:00</b>（請盡量在這個時段撥打，會比較容易找到人喔）
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<footer>
+  本頁彙整自「114年成人教育調查機構問卷」填表說明，僅供輔助參考；正式填答仍請依問卷實際題目與選項為準。<br>
+  若您的問題在這裡找不到答案，歡迎透過問卷留存的聯絡電話或電子信箱，與研究團隊聯繫，我們會盡快協助您。
+</footer>
+
+<script>
+const GROUPS = [
+  {key:"start", label:"開始填寫前", range:"必看"},
+  {key:"g1", label:"機構基本資料", range:"第1-5題"},
+  {key:"g2", label:"機構屬性", range:"第6-8題"},
+  {key:"g3", label:"人數與服務對象", range:"第9題"},
+  {key:"g4", label:"活動內容", range:"第10-12題"},
+  {key:"g5", label:"人力與經費", range:"第13-15題"},
+];
+
+const DATA = [
+  // 開始填寫前
+  {id:1, grp:"start", tag:"填答須知", q:"我填的資料會不會外洩？會不會被查稅或稽核？", a:"不會。依統計法規定，個別資料絕對保密，只做整體統計分析使用，不會提供給其他單位、也不會作為稽核用途。您留的電話與信箱，只在答案有疑問或漏答時，我們才會用來跟您確認。", kw:["外洩","查稅","稽核","保密","隱私"]},
+  {id:2, grp:"start", tag:"填答須知", q:"這份問卷是要填哪一年的資料？", a:"請填民國114年1月到12月整年的資料。像成立時間、人力這種比較固定不常變動的資料，請以114年12月底當時的狀況為準。", kw:["哪一年","民國幾年","填哪一年","年度資料"]},
+  {id:3, grp:"start", tag:"填答須知", q:"送出後還能修改嗎？填到一半可以先存檔嗎？", a:"建議您先備妥所需資料（例如人數、經費等統計數字）後，再一次完整填答，會比較順利。若填答過程中遇到問題或不確定能否修改，可以透過問卷上留的聯絡方式與研究團隊確認，避免中途離開造成資料遺失。", kw:["暫存","中途離開","可以修改","儲存進度","存檔"]},
+  {id:4, grp:"start", tag:"填答須知", q:"我們機構同時辦好幾種業務（例如高中又辦樂齡學習中心），要填幾份？", a:"每一種業務單位請各填一份。第8題請各自選填實際的機構類型，第9題以後的人數、人力、經費，也只需要填那個業務單位自己的部分，不用把全部業務加在一起算。填第1題機構名稱時，麻煩一併註明是哪個單位，例如「○○大學進修推廣部」。", kw:["好幾種業務","要填幾份","多個單位","分開填"]},
+  {id:5, grp:"start", tag:"填答須知", q:"很多題我們沒有資料、算不出來，怎麼辦？", a:"請先確認是不是必填題。如果手邊沒有正式統計，可以就您可得的資料估算填入，並在備註簡單說明估算方式即可；重點是據實填答，不要因為算不出精確數字就卡住不填。真的完全沒有相關資料的項目，歡迎再跟我們反映。", kw:["沒有資料","算不出來","估算"]},
+  {id:45, grp:"start", tag:"分館/分校填答", q:"我們是圖書館總館，底下有好幾個分館，需要每一個分館都各自填寫嗎？", a:"麻煩盡量請各分館都各自填寫一份，這樣統計出來的人數、人力、經費會更貼近各分館實際辦理的狀況。如果有部分資料只有總館才有、分館無法單獨提供（例如機構整體的經費來源），這部分可以由總館統一代為填寫，並在備註簡單註明是總館代填的資訊即可。學校有多個分校、社教機構有多個分處的情況，也是同樣的原則：能分開填就盡量分開填，真的只有總部才有的資料，再由總部統一處理。", kw:["分館","分校","分部","總館","總部","分社","分處"]},
+  {id:46, grp:"start", tag:"填答期間", q:"我們機構是114年中途才成立、或中途才開始辦理成人教育的，資料要怎麼填？", a:"請填實際有辦理成人教育活動期間的資料即可，例如7月才成立，就填7月到12月這段期間的人數、人次、經費等，不需要用推算的方式硬湊出全年度的數字。", kw:["中途成立","才成立","新成立"]},
+  {id:47, grp:"start", tag:"填答期間", q:"我們機構114年中途已經停辦或轉型，還需要填這份問卷嗎？", a:"只要114年當中有任何一段時間仍在辦理成人教育相關業務，就請針對有辦理的那段期間填答即可。如果整個114年度完全沒有辦理任何相關業務，建議先透過問卷留的聯絡方式跟我們確認一下，看是否仍需要填寫。", kw:["停辦","轉型","不辦了","結束營運","關閉"]},
+  {id:48, grp:"start", tag:"填答操作", q:"填寫到一半網路斷線，或不小心關掉分頁，資料會不見嗎？", a:"建議填答前，先把需要的數字（人數、人力、經費等）整理在其他文件裡，再一次貼上填寫，比較不會因為斷線或誤關網頁而遺失內容。萬一真的中途遺失，可能需要麻煩您重新填寫一次，造成不便先跟您說聲抱歉。", kw:["斷線","關掉分頁","資料不見","當機","網路不穩"]},
+  {id:49, grp:"start", tag:"填答期限", q:"這份問卷什麼時候截止？超過期限還可以補填嗎？", a:"請以邀請信或公文上載明的填答期限為準。如果不小心超過期限，也歡迎透過問卷留的聯絡方式跟我們反映，我們會視情況協助您補填，不用擔心。", kw:["截止","期限","逾期","補填","什麼時候要交"]},
+  {id:50, grp:"start", tag:"填答須知", q:"數字類的欄位如果實際數值是「0」，要填0還是留空？", a:"請直接填「0」，不要留空。留空的話系統可能會判斷成漏填，反而需要我們再跟您確認，多花大家的時間。", kw:["填0","留空","數字是0","填零"]},
+  {id:51, grp:"start", tag:"填答操作", q:"可以請不同同事分工填寫嗎？例如人力的部分給人資同事填、經費的部分給會計同事填？", a:"可以，只要最後是同一份問卷、同一個機構的資料就沒問題。建議先請各自負責的同事把內容整理好，再由一位同事統一輸入、一次送出，避免分頭同時填寫時系統只保留到最後一次操作的紀錄。", kw:["分工","不同同事","分開填寫","合併填寫","分頭填"]},
+  {id:52, grp:"start", tag:"填答操作", q:"我們收到好幾次邀請信或提醒通知，是不是要填好幾次？", a:"不用擔心，重複收到邀請信通常是聯絡名單重複所致，只要完整填答一次就可以了，不需要重複填寫。如果不確定自己是否已經填過，歡迎跟我們確認。", kw:["邀請信","重複收到","填好幾次","一直收到通知"]},
+  {id:53, grp:"start", tag:"填答操作", q:"用手機填寫時畫面排版跑掉、看不清楚，怎麼辦？", a:"這份問卷建議使用電腦或平板填寫，畫面會比較完整清楚。如果只能用手機，建議把手機轉成橫向操作，並直接用瀏覽器（而不是通訊軟體內建的小瀏覽器）開啟連結，顯示會比較穩定。", kw:["手機","排版跑掉","畫面跑版","手機填"]},
+  {id:54, grp:"start", tag:"學期制機構填答", q:"我們機構是以學期、學年為單位計算資料的（例如學校、進修部），沒有按月份統計，要怎麼對應問卷要的「114年1-12月整年」資料？", a:"如果貴機構平常都是以學期、學年在統計資料、沒有到月份的細分，建議把「113學年度下學期」加上「114學年度上學期」這兩個學期的資料合併估算，作為114年（民國114年1月至12月）整年資料的替代填法，因為這兩個學期加起來的時間範圍最貼近114年整個年度。如果貴機構剛好有更精確、能對應到月份的資料，還是建議優先用實際涵蓋114年1-12月的數字；沒有的話，用這兩個學期合併估算即可，並可以在備註簡單註明是以學期資料換算而來。", kw:["學期","學年","113學年","114學年","學期制"]},
+  {id:55, grp:"start", tag:"填答須知", q:"這份問卷有強制力嗎？不填會怎麼樣嗎？", a:"沒有強制力，這不是一份具有法律強制性的問卷。但還是誠心希望貴機構能撥冗協助填寫，因為有越多機構參與，我們做出來的分析才能更貼近成人教育真實的社會現況，也能幫助教育部之後在規劃相關政策時，更精準地掌握需求、解決問題。非常感謝您的幫忙！", kw:["強制力","法律強制性","法律效力","有沒有強制性","整份問卷有強制力"]},
+
+  // 機構基本資料 第1-5題
+  {id:6, grp:"g1", tag:"第1題", q:"機構名稱要填全名還是簡稱？", a:"請填全名。如果貴機構是分不同單位各填一份問卷，請一併寫上所屬單位名稱，例如「○○大學進修推廣部」。"},
+  {id:7, grp:"g1", tag:"第2題", q:"我們機構是民國前成立的，成立時間怎麼填？", a:"可以直接填西元年份即可。"},
+  {id:8, grp:"g1", tag:"第2題", q:"成立時間我只記得年份、不記得月份怎麼辦？", a:"年份一定要填；月份如果不確定，可以填最接近或大概的月份。"},
+  {id:9, grp:"g1", tag:"第3題", q:"通訊地址要填機構地址還是我自己的地址？", a:"請填機構的通訊地址即可。"},
+  {id:10, grp:"g1", tag:"第4、5題", q:"一定要留我的電話和email嗎？", a:"是的，麻煩留一下。這只在您填答的內容有疑問或漏答時，方便我們跟您確認使用，資料會保密，不做其他用途。"},
+
+  // 機構屬性 第6-8題
+  {id:11, grp:"g2", tag:"第6題", q:"公立、私立、公辦民營怎麼分？", a:"由政府設立、以政府預算運作的是「公立」；民間設立的是「私立」；由政府設立但委託民間經營的是「公辦民營」。三個選項中選一個最符合的即可。"},
+  {id:12, grp:"g2", tag:"第6題", q:"我們是公立學校附設的補校，算哪一種？", a:"請看設立主體來判斷。由公立學校附設的，仍然算是「公立」。"},
+  {id:13, grp:"g2", tag:"第7題", q:"我們是公立機構，到底算營利還是非營利？", a:"公部門，以及不是以賺錢為目的的機構，請選「非營利」。只有以營利為目的的私人企業（例如公司型態的補習班）才需要選「營利」。"},
+  {id:14, grp:"g2", tag:"第7題", q:"我們是財團法人、基金會，算哪一種？", a:"請選「非營利」。"},
+  {id:15, grp:"g2", tag:"第8題", q:"我們又是大學、又辦樂齡大學，該選哪個機構類型？", a:"請以「這份問卷所填的這個業務單位」的主要業務為準，選一項最符合的類型。如果兩種業務都需要回報，建議分開各填一份問卷，各自選擇對應的類型。"},
+  {id:16, grp:"g2", tag:"第8題", q:"機構類型清單裡找不到我們（例如長青學苑、松年大學）？", a:"請選清單最後面的「勞動機關或社福機關設立之機構」，它的括號裡有列出長青學苑、松年大學、婦女大學、樂活大學。如果真的都不符合，再選「其他」。"},
+  {id:17, grp:"g2", tag:"第8題", q:"樂齡大學和樂齡學習中心差在哪裡？", a:"樂齡大學是由大學校院開辦、提供55歲以上長者到校園學習的課程；樂齡學習中心則是設在鄉鎮市區、屬於社區型的長者學習據點。請依貴單位實際的性質選填。"},
+
+  // 人數與服務對象 第9-12題
+  {id:18, grp:"g3", tag:"第9題", q:"人數和人次到底差在哪？", a:"人數指的是不重複的「人」，10個人就是10。人次則是把每一堂課、每個活動的報名數加起來，同一個人上了3堂課就算3人次。舉例來說：10個人分別參加了5人、10人、7人的三個課程，人數是10，人次則是22。"},
+  {id:19, grp:"g3", tag:"第9題", q:"我們只有報名人次的統計，沒有去重複算過的人數怎麼辦？", a:"沒關係，人數欄可以直接填跟人次一樣的數字。如果之後有名冊能算出不重複的人數會更準確，但沒有的話，填一樣的數字即可。"},
+  {id:20, grp:"g3", tag:"第9題", q:"這裡只算成人嗎？兒童、長輩的課要不要算進去？", a:"不限成人。凡是各年齡層來參加學習活動或課程的學員，都可以列入計算。"},
+  {id:21, grp:"g3", tag:"第9題", q:"我們沒有特別區分男女的資料怎麼辦？", a:"請盡量從名冊估算填入即可。男、女人數不一定要剛好加起來等於總人數，如果有落差，據實填寫就可以。"},
+  {id:22, grp:"g3", tag:"第9題", q:"我們服務很多不同年齡層的學員，只能選一個主要服務對象嗎？", a:"請選最主要的那一個。例如以國小學童為主，就選「幼童」；以國高中為主，就選「青少年」。"},
+  {id:23, grp:"g3", tag:"第9題", q:"選了「成人」之後，還要再選在學、在職、待業嗎？", a:"是的，選了「成人」之後，請再從成人裡最主要的身分（在學學生／在職／待業）選一個。"},
+
+  // 活動內容 第13-16題
+  {id:24, grp:"g4", tag:"第10題", q:"我們只辦兒童或青少年的課，沒有成人課，選「否」會怎樣？", a:"選「否」之後，系統會直接跳過後面活動內容的題目，帶您到人力狀況那幾題，您不需要勉強填寫活動內容部分。"},
+  {id:25, grp:"g4", tag:"第10題", q:"我們只辦了一點點成人課，算不算「有」？", a:"只要114年有開辦任何給成人的課程或活動，就請選「是」。"},
+  {id:56, grp:"g4", tag:"第10題", q:"如果我們機構114年都沒有辦任何成人教育課程、活動，還要填這份問卷嗎？", a:"要的。問卷裡有一題就是專門在問「是否有開辦成人教育課程或活動」，只要照實選「沒有」即可，系統就會自動跳過後面活動內容的題目，直接帶您到人力狀況那幾題繼續填答，麻煩您還是幫忙完整填寫這份問卷喔。", kw:["都沒有辦","完全沒有辦","沒有開辦任何課程","沒有辦成人教育"]},
+  {id:26, grp:"g4", tag:"第10題", q:"「系列性課程」的定義是什麼？", a:"指有聘授課老師、有招生、有固定主題，並且持續一段時間（例如數週、數月、一季或一學期）的課程，不論收費或免費、有沒有發證書，都算。單場演講或一天的研習則不算系列性課程。"},
+  {id:27, grp:"g4", tag:"第10題", q:"開班數要怎麼算？", a:"請填114年實際開的班級總數，直接填數字即可。"},
+  {id:28, grp:"g4", tag:"第10題", q:"活動形式這題可以複選嗎？", a:"可以，有幾種形式就勾選幾種。"},
+  {id:29, grp:"g4", tag:"第10題", q:"滿意度前3名要怎麼判斷？我們沒有做過滿意度問卷。", a:"可以依學員的回饋、報名踴躍的程度，或您自己整體的評估來判斷，不一定要有正式問卷才能填答。"},
+  {id:30, grp:"g4", tag:"第10題", q:"我們只有一兩種活動，選不到3個怎麼辦？", a:"就您實際有的項目選填即可，不需要硬湊滿3個。"},
+  {id:31, grp:"g4", tag:"第10題", q:"滿意度前3名需要照名次排順序嗎？", a:"不需要。直接勾選出您認為滿意度最高的前3項即可，不必特別排出第1、2、3名的先後順序。"},
+  {id:32, grp:"g4", tag:"第11題", q:"我們的課程橫跨兩種類別（例如又像藝術、又像休閒），要怎麼歸類？", a:"請依課程的主要內容選填，這題可以複選，如果真的橫跨兩種類別，兩個都勾選也沒關係。"},
+  {id:33, grp:"g4", tag:"第11題", q:"學習活動類別裡找不到適合的選項？", a:"請選「其他」，再用簡單幾個字說明實際的活動內容。"},
+  {id:34, grp:"g4", tag:"第12題", q:"我們平日、假日、白天、晚上都有開課，可以都選嗎？", a:"可以，有開課的時段都請勾選起來。"},
+
+  // 人力與經費 第17-19題
+  {id:35, grp:"g5", tag:"第13題", q:"專職和兼職怎麼分？", a:"專職指的是全日制、有固定職務和工時，而且主要就在貴機構任職的人，例如正職員工、全職行政或專案人員。兼職則是部分工時、或主要不是在貴機構任職的人，例如兼任顧問、工讀生、外聘講師。"},
+  {id:36, grp:"g5", tag:"第13題", q:"約聘人員算專職嗎？", a:"如果是全日制的工作型態，可以算進專職裡。"},
+  {id:37, grp:"g5", tag:"第13題", q:"這題人力狀況是算全機構，還是只算成人教育的人？", a:"這一題請填全機構的人力狀況即可。"},
+  {id:38, grp:"g5", tag:"第13題", q:"我們沒有志工，志工那題怎麼選？", a:"請直接選「沒有志工」這個選項即可。"},
+  {id:39, grp:"g5", tag:"第14題", q:"經費來源這題可以複選嗎？", a:"可以，有幾種來源就勾選幾種。"},
+  {id:40, grp:"g5", tag:"第14題", q:"支出總額是要填全機構的，還是只填成人教育業務的部分？", a:"請以問卷當下該題目提供的填答說明為準；如果您對填答範圍仍不確定，建議透過問卷留存的聯絡方式與研究團隊確認一下，避免填錯範圍影響數字的正確性。", tip:"這一題比較容易讓人猶豫，寧可花一分鐘跟我們確認，也不要用猜的喔！"},
+  {id:41, grp:"g5", tag:"第14題", q:"「投入學習經費」包含哪些？外聘講師的鐘點費算嗎？", a:"是指實際花在辦理課程、活動上的直接支出，例如教材教具、場地租借、外聘講師鐘點費、活動辦理費、教學設備等。不包含貴機構正式員工的薪資。這個金額通常會小於或等於前一題的總支出。"},
+  {id:42, grp:"g5", tag:"第14題", q:"經費級距只到「200萬以上」，我們有好幾千萬，怎麼填？", a:"只要超過200萬，都請選「200萬以上」這一個選項即可，不需要再細分實際金額。"},
+  {id:43, grp:"g5", tag:"第15題", q:"我們沒有遇到什麼經營困境，要選什麼？", a:"請選「否」，選完之後系統會直接帶您到問卷結束頁。"},
+  {id:44, grp:"g5", tag:"第15題", q:"經營困境這題可以複選嗎？", a:"可以。選「是」之後，下面的困境項目可以複選。"},
+];
+
+let activeGrp = "start";
+
+/* =====================================================================
+   正式問卷題號對照表（依「114年成人教育調查機構問卷修訂版」，共15題）
+   說明：本問卷屬於政府統計調查，依統計法第15條規定原則上均應據實填答；
+   required:true  → 原則上這題都要填答
+   required:"conditional" → 是否要填答，要看前面題目的跳答邏輯而定（詳見 skip）
+   ===================================================================== */
+const QREF = [
+  {num:"1", title:"機構名稱", required:true, note:"請填全名。", kw:["機構名稱","填全名"]},
+  {num:"2", title:"機構成立時間", required:true, note:"民國前成立的可直接填西元年；只記得年份，月份可填最接近的月份。", kw:["機構成立時間","成立時間"]},
+  {num:"3", title:"通訊地址", required:true, note:"請填機構的通訊地址。", kw:["通訊地址"]},
+  {num:"4-5", title:"填表人姓名、職稱、連絡電話、電子信箱", required:true, note:"這是為了在您的答案有疑問或漏答時方便我們聯繫確認，資料會保密，不做其他用途。", kw:["填表人姓名","填表人職稱","連絡電話","電子信箱"]},
+  {num:"6", title:"機構設立別（公立／私立／公辦民營，單選）", required:true, note:"請三選一，填完後接續回答第7題。", kw:["設立別","公立機構","私立機構","公辦民營"]},
+  {num:"7", title:"機構組織別（營利／非營利，單選）", required:true, note:"請二選一，填完後接續回答第8題。", kw:["組織別","營利組織","非營利組織"]},
+  {num:"8", title:"機構類型（16項，單選）", required:true, note:"請依貴機構主要業務性質選一項，填完後接續回答第9題。", kw:["屬於下列哪一類型","機構類型","哪一類型","科學教育館","公立圖書館","空中大學","教育廣播電台","樂齡大學","樂齡學習中心","家庭教育中心","新住民學習中心"]},
+  {num:"9", title:"學員人數與人次（9-1）、主要服務對象（9-2）", required:true, note:"9-1人數人次、9-2服務對象兩部分都需要填答，填完後接續回答第10題。", kw:["學員人數","參與學習活動或課程之學員","主要服務對象","人數及人次"]},
+  {num:"10", title:"是否開辦成人教育課程或活動（10-1）、活動形式與開班數（10-2）、滿意度前3名（10-3）", required:"conditional",
+    skip:"10-1如果選「有」，10-2、10-3就需要接著填；如果選「沒有」，10-2、10-3以及第11、12題（活動內容部分）都可以直接跳過，系統會帶您跳到第13題人力狀況。",
+    kw:["是否有開辦任何成人教育課程或活動","提供成人哪些形式的學習活動","形式的學習活動滿意度較高","系列性課程"]},
+  {num:"11", title:"學習活動類別（11-1，可複選）、類別滿意度前3名（11-2）", required:"conditional",
+    skip:"只有在第10題（10-1）選「有」開辦成人教育課程或活動時才需要填答；如果第10題選「沒有」，這一整題可以跳過。",
+    kw:["提供成人哪些學習活動類別","類別的學習活動滿意度較高","語言系列","環境生態","資訊科技"]},
+  {num:"12", title:"課程／活動開設時間（可複選）", required:"conditional",
+    skip:"跟第11題一樣，只有在第10題（10-1）選「有」時才需要填答；如果選「沒有」，這題也可以跳過。",
+    kw:["開設成人學習活動時間","平日白天","平日晚上","假日白天","假日晚上"]},
+  {num:"13", title:"人力狀況（專職人力、兼職人力、志工）", required:true, note:"三個小項都要填，沒有志工的話選「沒有志工」即可，填完後接續回答第14題。", kw:["專職人力","兼職人力","人力狀況","志工"]},
+  {num:"14", title:"經費狀況（經費來源、支出總額、投入學習經費）", required:true, note:"三個小項都要填，填完後接續回答第15題。", kw:["經費來源","支出總額","投入學習經費","經費狀況"]},
+  {num:"15", title:"經營困境（是／否，選是可複選困境項目）", required:true, note:"單選是或否；選「是」的話，底下的困境項目可以複選。", kw:["經營上是否遇到","經營困境","經費短缺","人力有限","師資不足"]},
+];
+
+const NECESSITY_KW = ["必填","一定要填","一定要嗎","需要填","要不要填","可以不填","可以跳過","要填嗎","一定要回答","強制填","這題要填嗎","可不可以不填","是不是一定要"];
+
+function isNecessityQuery(q){
+  return NECESSITY_KW.some(k => q.includes(k));
+}
+
+const QREF_ORDER = QREF.map(r => r.num);
+let lastQNum = null; // 記住聊天中「最近一次」被查詢或提到的正式題號，方便處理「那下一題呢」這種接續問法
+
+function resolveRelativeQuestionRef(q){
+  if(lastQNum === null) return null;
+  const idx = QREF_ORDER.indexOf(lastQNum);
+  if(idx === -1) return null;
+  if(/下一題|下一個問題|下題|接下來(那|一)題|再來(那|一)題|再下一題/.test(q)){
+    return QREF[Math.min(idx + 1, QREF.length - 1)];
+  }
+  if(/上一題|前一題|上題|前面(那|一)題|上個問題/.test(q)){
+    return QREF[Math.max(idx - 1, 0)];
+  }
+  if(/^(這題|這一題|那題|那一題)/.test(q.trim())){
+    return QREF[idx];
+  }
+  return null;
+}
+
+function findQuestionRef(q){
+  // 1. 明確寫「第X題」的格式
+  let m = q.match(/第\s*4\s*[、\/,]?\s*5\s*題/);
+  if(m) return QREF.find(r => r.num === "4-5");
+  m = q.match(/第\s*(1[0-5]|[1-9])\s*題/);
+  if(m){
+    const ref = QREF.find(r => r.num === m[1]);
+    if(ref) return ref;
+  }
+  // 2. 「下一題」「上一題」「這題」這種接續問法 → 依聊天中最近一次提到的題號往前後推
+  const rel = resolveRelativeQuestionRef(q);
+  if(rel) return rel;
+  // 3. 沒有寫題號，但直接貼了問卷題目原文或提到該題的關鍵字 → 用內容比對找出是哪一題
+  let best = null, bestScore = 0;
+  QREF.forEach(ref => {
+    if(!ref.kw) return;
+    let s = 0;
+    ref.kw.forEach(k => { if(q.includes(k)) s++; });
+    if(s > bestScore){ bestScore = s; best = ref; }
+  });
+  return bestScore > 0 ? best : null;
+}
+
+function necessityAnswerHTML(ref){
+  let head;
+  if(ref.required === true){
+    head = "✅ 這一題原則上<b>需要填答</b>。";
+  } else {
+    head = "🔀 這一題<b>不一定每個人都要填</b>，要看前面題目的答案而定：";
+  }
+  let html = `<span class="bubble-tag">第${ref.num}題</span><br>`
+    + `<b>${ref.title}</b><br>${head}`;
+  if(ref.note) html += `<br>${ref.note}`;
+  if(ref.skip) html += `<div class="bubble-tip"><span class="label">跳答邏輯：</span>${ref.skip}</div>`;
+  html += `<div class="bubble-tip"><span class="label">補充：</span>本問卷屬於政府統計調查，依統計法規定原則上都應據實填答；上面提到會跳過的題目，代表在該情況下確實不需要另外填寫。</div>`;
+  return html;
+}
+
+function bigrams(str){
+  const s = str.replace(/[\s「」『』（）()、，。？?！!／/,.:：；;“”"']/g, "");
+  const set = new Set();
+  for(let i=0;i<s.length-1;i++) set.add(s.substr(i,2));
+  for(const ch of s) set.add(ch);
+  return set;
+}
+
+// 建立每一則問答的比對索引，並計算每個bigram/字元在全部問答中出現的次數（用來做IDF加權）
+// 目的：像「這份問卷」「要填」這種在很多題裡都會出現的通用詞，權重會被壓低；
+// 而「強制力」「志工」「分館」這種只出現在少數題目裡的關鍵詞，權重會被放大，
+// 這樣才不會因為問法剛好套到某一題的開頭幾個字，就被誤判成那一題。
+const ENTRY_INDEX = DATA.map(e => bigrams(e.q + " " + e.a + " " + e.tag + " " + (e.kw ? e.kw.join(" ") : "")));
+const DOC_FREQ = new Map();
+ENTRY_INDEX.forEach(bg => bg.forEach(tok => DOC_FREQ.set(tok, (DOC_FREQ.get(tok)||0) + 1)));
+const DOC_COUNT = DATA.length;
+
+function score(query, entry, idx){
+  const qb = bigrams(query);
+  const tb = idx !== undefined ? ENTRY_INDEX[idx] : bigrams(entry.q + " " + entry.a + " " + entry.tag + " " + (entry.kw ? entry.kw.join(" ") : ""));
+  let s = 0;
+  qb.forEach(tok => {
+    if(tb.has(tok)){
+      const df = DOC_FREQ.get(tok) || 1;
+      s += Math.log((DOC_COUNT + 1) / df); // 越少題目共用的詞，加分越多
+    }
+  });
+  // 關鍵字命中：只要問題裡出現這一題設定的關鍵字（例如「強制力」「志工」「分館」），直接大幅加分
+  if(entry.kw){
+    entry.kw.forEach(k => { if(query.includes(k)) s += 18; });
+  }
+  // 完整字串包含時再加一點分數
+  if(entry.q.includes(query)) s += 6;
+  return s;
+}
+
+function renderStepper(){
+  const wrap = document.getElementById("stepper");
+  wrap.innerHTML = "";
+  GROUPS.forEach(g => {
+    const div = document.createElement("div");
+    div.className = "step" + (g.key===activeGrp ? " active":"");
+    div.innerHTML = `<span class="num">${g.range}</span>${g.label}`;
+    div.onclick = () => { activeGrp = g.key; document.getElementById("searchInput").value=""; renderStepper(); renderByGroup(); };
+    wrap.appendChild(div);
+  });
+}
+
+function cardHTML(entry){
+  const tip = entry.tip ? `<div class="tip-box"><span class="label">小提醒：</span>${entry.tip}</div>` : "";
+  return `
+    <div class="card">
+      <span class="tag-num">${entry.tag}</span>
+      <p class="q-line">${entry.q}</p>
+      <p class="a-line">${entry.a}</p>
+      ${tip}
+    </div>`;
+}
+
+function renderByGroup(){
+  document.getElementById("resultsMeta").innerHTML = "";
+  const results = document.getElementById("results");
+  const g = GROUPS.find(x=>x.key===activeGrp);
+  const list = DATA.filter(d=>d.grp===activeGrp);
+  results.innerHTML = `<div class="section-heading">${g.label}（${g.range}）</div>`;
+  list.forEach(entry => results.innerHTML += cardHTML(entry));
+}
+
+function runSearch(){
+  const query = document.getElementById("searchInput").value.trim();
+  const results = document.getElementById("results");
+  const meta = document.getElementById("resultsMeta");
+  results.innerHTML = "";
+
+  if(!query){ renderByGroup(); return; }
+
+  // 優先判斷：是不是在問「第X題是不是必填」
+  const qrefS = findQuestionRef(query);
+  const relRefS = resolveRelativeQuestionRef(query);
+  if(qrefS && (isNecessityQuery(query) || relRefS)){
+    lastQNum = qrefS.num;
+    meta.innerHTML = `為您查詢正式問卷題號對照：`;
+    results.innerHTML = `<div class="card"><span class="tag-num">第${qrefS.num}題</span><p class="q-line">${qrefS.title}</p><p class="a-line">${qrefS.required===true ? "這一題原則上需要填答。" : "這一題是否要填答，要看前面題目的答案而定。"}${qrefS.note ? "　"+qrefS.note : ""}</p>${qrefS.skip ? `<div class="tip-box"><span class="label">跳答邏輯：</span>${qrefS.skip}</div>` : ""}</div>`;
+    return;
+  }
+
+  const scored = DATA.map((entry, idx) => ({entry, s: score(query, entry, idx)}))
+                      .filter(x => x.s > 0)
+                      .sort((a,b) => b.s - a.s);
+
+  if(scored.length === 0){
+    meta.innerHTML = `查無符合「<b>${query}</b>」的說明。`;
+    results.innerHTML = `
+      <div class="no-result">
+        <div class="big">目前還沒有對應的填寫說明</div>
+        您可以換個關鍵字試試看，或直接用上方按題號分類瀏覽。<br>
+        找不到答案也沒關係，歡迎與研究團隊聯繫，我們很樂意協助您。
+      </div>`;
+    return;
+  }
+
+  meta.innerHTML = `找到 <b>${scored.length}</b> 則相關說明，依相關度排序：`;
+  scored.slice(0, 8).forEach(x => results.innerHTML += cardHTML(x.entry));
+}
+
+function renderQuickChips(){
+  const chips = ["總館底下的分館要不要都填", "學期制怎麼對應114年", "人數和人次差在哪", "志工怎麼選", "200萬以上怎麼填", "中途成立資料怎麼填", "送出後能修改嗎"];
+  const wrap = document.getElementById("quickChips");
+  wrap.innerHTML = "";
+  chips.forEach(c => {
+    const el = document.createElement("span");
+    el.className = "quick-chip";
+    el.textContent = c;
+    el.onclick = () => { document.getElementById("searchInput").value = c; runSearch(); };
+    wrap.appendChild(el);
+  });
+}
+
+document.getElementById("searchBtn").onclick = runSearch;
+document.getElementById("searchInput").addEventListener("keydown", e => { if(e.key==="Enter") runSearch(); });
+document.getElementById("searchInput").addEventListener("input", e => { if(e.target.value.trim()==="") renderByGroup(); });
+
+renderStepper();
+renderQuickChips();
+renderByGroup();
+
+/* ===================== 聊天模式 ===================== */
+const CHAT_QUICK = ["總館底下的分館要不要都填", "學期制怎麼對應114年", "人數和人次差在哪", "志工怎麼選", "200萬以上怎麼填", "送出後能修改嗎"];
+
+function chatBubble(role, html){
+  const row = document.createElement("div");
+  row.className = "msg-row " + role;
+  row.innerHTML = `
+    <div class="avatar ${role}">${role==="bot" ? "🌱" : "🙋"}</div>
+    <div class="bubble">${html}</div>`;
+  return row;
+}
+
+function scrollChatToBottom(){
+  const body = document.getElementById("chatBody");
+  body.scrollTop = body.scrollHeight;
+}
+
+function chatAnswerHTML(entry){
+  const tip = entry.tip ? `<div class="bubble-tip"><span class="label">小提醒：</span>${entry.tip}</div>` : "";
+  return `<span class="bubble-tag">${entry.tag}</span><br>${entry.a}${tip}`;
+}
+
+function chatNoMatchHTML(query){
+  return `目前小幫手還沒有找到跟「${escapeHtml(query)}」完全對應的說明😅<br>
+    您可以換個說法再問一次，或點下面「依題號瀏覽」用題號找找看。<br>
+    <span class="contact-line">找不到答案也沒關係，歡迎透過問卷留的聯絡方式與研究團隊聯繫喔！</span>`;
+}
+
+function escapeHtml(str){
+  const div = document.createElement("div");
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+function addTypingBubble(){
+  const body = document.getElementById("chatBody");
+  const row = document.createElement("div");
+  row.className = "msg-row bot typing";
+  row.id = "typingRow";
+  row.innerHTML = `
+    <div class="avatar bot">🌱</div>
+    <div class="bubble"><span class="dot-anim"></span><span class="dot-anim"></span><span class="dot-anim"></span></div>`;
+  body.appendChild(row);
+  scrollChatToBottom();
+}
+
+function removeTypingBubble(){
+  const row = document.getElementById("typingRow");
+  if(row) row.remove();
+}
+
+function sendChatMessage(text){
+  const query = (text !== undefined ? text : document.getElementById("chatInput").value).trim();
+  if(!query) return;
+
+  const body = document.getElementById("chatBody");
+  body.appendChild(chatBubble("user", escapeHtml(query)));
+  document.getElementById("chatInput").value = "";
+  scrollChatToBottom();
+
+  addTypingBubble();
+
+  setTimeout(() => {
+    removeTypingBubble();
+
+    // 優先判斷：是不是在問「第X題是不是必填/要不要填」，是的話直接查正式問卷題號對照表回答
+    const qref = findQuestionRef(query);
+    const relRef = resolveRelativeQuestionRef(query); // 「那下一題呢」這種接續問法，即使沒講「必填」兩個字，也視為延續上一輪的必填提問
+    if(qref && (isNecessityQuery(query) || relRef)){
+      lastQNum = qref.num;
+      body.appendChild(chatBubble("bot", necessityAnswerHTML(qref)));
+      scrollChatToBottom();
+      return;
+    }
+
+    const scored = DATA.map((entry, idx) => ({entry, s: score(query, entry, idx)}))
+                        .filter(x => x.s > 0)
+                        .sort((a,b) => b.s - a.s);
+
+    if(scored.length === 0){
+      body.appendChild(chatBubble("bot", chatNoMatchHTML(query)));
+    } else {
+      body.appendChild(chatBubble("bot", chatAnswerHTML(scored[0].entry)));
+      if(scored.length > 1 && scored[1].s >= scored[0].s * 0.6){
+        const alt = scored[1].entry;
+        const altRow = document.createElement("div");
+        altRow.className = "msg-row bot";
+        altRow.innerHTML = `<div class="avatar bot">🌱</div><div class="bubble" style="background:#fff;border:1px solid var(--line);">
+          您問的也可能是這一題：<br><span class="bubble-tag">${alt.tag}</span><br>${alt.q}
+          <br><span class="contact-line" style="cursor:pointer;" onclick="sendChatMessage('${alt.q.replace(/'/g,"\\'")}')">查看這題的說明 →</span>
+        </div>`;
+        body.appendChild(altRow);
+      }
+    }
+    scrollChatToBottom();
+  }, 450);
+}
+
+function renderChatSuggest(){
+  const wrap = document.getElementById("chatSuggest");
+  wrap.innerHTML = "";
+  CHAT_QUICK.forEach(c => {
+    const el = document.createElement("span");
+    el.className = "quick-chip";
+    el.textContent = c;
+    el.onclick = () => sendChatMessage(c);
+    wrap.appendChild(el);
+  });
+}
+
+function initChat(){
+  const body = document.getElementById("chatBody");
+  body.appendChild(chatBubble("bot", "您好，我是填表小幫手🌱<br>請直接輸入您想問的問題，例如「人數人次怎麼算」或「志工怎麼選」，我會馬上幫您查填寫說明。"));
+  renderChatSuggest();
+}
+
+document.getElementById("chatSendBtn").onclick = () => sendChatMessage();
+document.getElementById("chatInput").addEventListener("keydown", e => { if(e.key==="Enter") sendChatMessage(); });
+
+document.getElementById("btnModeChat").onclick = () => {
+  document.getElementById("btnModeChat").classList.add("active");
+  document.getElementById("btnModeBrowse").classList.remove("active");
+  document.getElementById("chatMode").style.display = "";
+  document.getElementById("browseMode").style.display = "none";
+  document.getElementById("stepper").style.display = "none";
+};
+document.getElementById("btnModeBrowse").onclick = () => {
+  document.getElementById("btnModeBrowse").classList.add("active");
+  document.getElementById("btnModeChat").classList.remove("active");
+  document.getElementById("browseMode").style.display = "";
+  document.getElementById("chatMode").style.display = "none";
+  document.getElementById("stepper").style.display = "";
+};
+
+initChat();
+</script>
+
+</body>
+</html>
